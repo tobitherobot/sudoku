@@ -4,6 +4,8 @@ public class Model {
 
     private int[][] fields;
 
+    // TODO bis jz sinnlos
+
     public Model() {
         // empty
     }
