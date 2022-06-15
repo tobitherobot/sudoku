@@ -1,6 +1,9 @@
 package org.example;
 
 import org.example.view.MainFrame;
+import org.example.view.SudokuField;
+
+import java.awt.*;
 
 public class Controller {
 
@@ -14,6 +17,24 @@ public class Controller {
     }
 
     public void onChange(int id, String value) {
-        System.out.println("Field " + id + " changed to " + value);
+
+        SudokuField field = view.getSudokuField(id);
+        if (!field.isValidInput()) field.setBackgroundColor(Color.RED);
+        else field.setBackgroundColor(Color.YELLOW);
     }
+
+    public void onFocusGained(int id) {
+
+        SudokuField field = view.getSudokuField(id);
+        if (!field.isValidInput()) field.setBackgroundColor(Color.RED);
+        else field.setBackgroundColor(Color.YELLOW);
+    }
+
+    public void onFocusLost(int id) {
+
+        SudokuField field = view.getSudokuField(id);
+        if (field.isValidInput()) field.setBackgroundColor(Color.WHITE);
+    }
+
+
 }

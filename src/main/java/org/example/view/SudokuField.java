@@ -5,11 +5,9 @@ import org.example.Controller;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.text.NumberFormat;
 
 public class SudokuField extends JTextField {
 
@@ -61,14 +59,30 @@ public class SudokuField extends JTextField {
         addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                setBackgroundColor(Color.YELLOW);
+                controller.onFocusGained(id);
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                setBackgroundColor(Color.WHITE);
+                controller.onFocusLost(id);
             }
         });
+    }
+
+    public boolean isValidInput() {
+
+        String text = getText();
+
+        try {
+            if (!text.isEmpty()) {
+                int nm = Integer.parseInt(text);
+                if (nm < 1 || 9 < nm) throw new NumberFormatException("Number is too big! " + nm);
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("Input is invalid! " + text);
+        }
+        return false;
     }
 
     public void setId(int id) {
