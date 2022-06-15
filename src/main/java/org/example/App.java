@@ -9,6 +9,5 @@ public class App
     public static void main( String[] args )
     {
         SwingUtilities.invokeLater(MainFrame::new);
-        System.out.println("Hello World!");
     }
 }

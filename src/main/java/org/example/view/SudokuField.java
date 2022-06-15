@@ -5,7 +5,11 @@ import org.example.Controller;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.text.NumberFormat;
 
 public class SudokuField extends JTextField {
 
@@ -22,16 +26,17 @@ public class SudokuField extends JTextField {
         setValue(value);
         setEditable(isEditable);
 
-        if (isEditable) setColor(Color.BLUE);
-        else setColor(Color.BLACK);
-
-        addListener();
+        addChangeListener();
+        addFocusListener();
 
         setHorizontalAlignment(JTextField.CENTER);
         setFont(new Font("Serif", Font.BOLD, 30));
+
+        if (isEditable) setTextColor(Color.BLUE);
+        else setTextColor(Color.BLACK);
     }
 
-    private void addListener() {
+    private void addChangeListener() {
 
         getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -47,6 +52,21 @@ public class SudokuField extends JTextField {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 controller.onChange(getId(), getText());
+            }
+        });
+    }
+
+    public void addFocusListener() {
+
+        addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                setBackgroundColor(Color.YELLOW);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                setBackgroundColor(Color.WHITE);
             }
         });
     }
@@ -67,12 +87,20 @@ public class SudokuField extends JTextField {
         return getText();
     }
 
-    public void setColor(Color color) {
+    public void setTextColor(Color color) {
         setForeground(color);
     }
 
-    public Color getColor() {
+    public Color getTextColor() {
         return getForeground();
+    }
+
+    public void setBackgroundColor(Color color) {
+        super.setBackground(color);
+    }
+
+    public Color getBackgroundColor() {
+        return super.getBackground();
     }
 
     public void setEditable(boolean isEditable) {

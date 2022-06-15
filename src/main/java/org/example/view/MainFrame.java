@@ -12,6 +12,7 @@ public class MainFrame extends JFrame {
     private final int VIEW_WIDTH = 1080;
 
     private Controller controller;
+    private SudokuFrame sudokuFrame;
 
     public MainFrame() {
 
@@ -19,7 +20,7 @@ public class MainFrame extends JFrame {
         controller = new Controller(new Model(), this);
 
         Container container = new Container();
-        SudokuFrame sudokuFrame = new SudokuFrame(controller);
+        sudokuFrame = new SudokuFrame(controller);
         container.add(sudokuFrame);
 
         setContentPane(container);

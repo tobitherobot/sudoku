@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Arrays;
+
 public class Model {
 
     private int[][] fields;
@@ -20,5 +22,11 @@ public class Model {
 
     public int[][] getFields() {
         return fields;
+    }
+
+    public void print() {
+        for (int[] row : fields) {
+            System.out.println(Arrays.toString(row));
+        }
     }
 }

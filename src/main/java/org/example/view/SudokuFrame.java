@@ -12,7 +12,6 @@ public class SudokuFrame extends Container {
     public SudokuFrame(Controller controller) {
 
         setLayout(new GridLayout(9, 9));
-
         setSize(SUDOKU_WIDTH, SUDOKU_HEIGHT);
 
         for (int i = 0; i < 9; i++) {
@@ -23,9 +22,5 @@ public class SudokuFrame extends Container {
                 add(sudokuField);
             }
         }
-    }
-
-    public void onChange(int id, String value) {
-        System.out.println("Field " + id + " has changed to " + value);
     }
 }
