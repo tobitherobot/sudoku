@@ -1,9 +1,14 @@
 package org.example;
 
-public class App 
+import org.example.view.MainFrame;
+
+import javax.swing.*;
+
+public class App
 {
     public static void main( String[] args )
     {
+        SwingUtilities.invokeLater(MainFrame::new);
         System.out.println("Hello World!");
     }
 }
