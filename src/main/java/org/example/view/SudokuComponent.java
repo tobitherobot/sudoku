@@ -9,20 +9,22 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-public class SudokuField extends JTextField {
+public class SudokuComponent extends JTextField {
+
+    private int id;
+    private boolean isFocused;
 
     private Controller controller;
-    private int id;
 
-    public SudokuField(Controller controller, int id, String value, boolean isEditable) {
+    public SudokuComponent(Controller controller, int id) {
 
         // TODO only allow single digit inputs, change font?
-
         this.controller = controller;
 
-        setId(id);
-        setValue(value);
-        setEditable(isEditable);
+        this.id = id;
+        this.isFocused = false;
+        setText("");
+        setEditable(true);
 
         addChangeListener();
         addFocusListener();
@@ -30,7 +32,7 @@ public class SudokuField extends JTextField {
         setHorizontalAlignment(JTextField.CENTER);
         setFont(new Font("Serif", Font.BOLD, 30));
 
-        if (isEditable) setTextColor(Color.BLUE);
+        if (isEditable()) setTextColor(Color.BLUE);
         else setTextColor(Color.BLACK);
     }
 
@@ -54,7 +56,7 @@ public class SudokuField extends JTextField {
         });
     }
 
-    public void addFocusListener() {
+    private void addFocusListener() {
 
         addFocusListener(new FocusListener() {
             @Override
@@ -93,6 +95,14 @@ public class SudokuField extends JTextField {
         return id;
     }
 
+    public void setFocused(boolean isFocused) {
+        this.isFocused = isFocused;
+    }
+
+    public boolean isFocused() {
+        return isFocused;
+    }
+
     public void setValue(String value) {
         setText(value);
     }
@@ -107,21 +117,5 @@ public class SudokuField extends JTextField {
 
     public Color getTextColor() {
         return getForeground();
-    }
-
-    public void setBackgroundColor(Color color) {
-        super.setBackground(color);
-    }
-
-    public Color getBackgroundColor() {
-        return super.getBackground();
-    }
-
-    public void setEditable(boolean isEditable) {
-        super.setEditable(isEditable);
-    }
-
-    public boolean isEditable() {
-        return super.isEditable();
     }
 }

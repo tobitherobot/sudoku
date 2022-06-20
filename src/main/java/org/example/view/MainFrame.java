@@ -1,11 +1,10 @@
 package org.example.view;
 
 import org.example.Controller;
-import org.example.Model;
+import org.example.model.Sudoku;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
 
 public class MainFrame extends JFrame {
@@ -13,14 +12,15 @@ public class MainFrame extends JFrame {
     private final int VIEW_HEIGHT = 720;
     private final int VIEW_WIDTH = 1080;
 
-    private Controller controller;
+    private Sudoku sudoku;
 
-    private Map<Integer, SudokuField> fields;
+    private Map<Integer, SudokuComponent> fields;
 
     public MainFrame() {
 
         super("Sudoku");
-        controller = new Controller(new Model(), this);
+        sudoku = new Sudoku();
+        Controller controller = new Controller(sudoku, this);
 
         // TODO gui
         //Container container = new Container();
@@ -31,20 +31,28 @@ public class MainFrame extends JFrame {
         setLayout(new GridLayout(9, 9));
         setSize(600, 600);
 
-        fields = new HashMap<>();
-
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-
-                int id = i * 9 + j;
-                SudokuField sudokuField = new SudokuField(controller, i * 9 + j, "", true);
-                fields.put(id, sudokuField);
-                add(sudokuField);
-            }
+        for (int i = 0; i < 81; i++) {
+            add(new SudokuComponent(controller, i));
         }
+        update();
     }
 
-    public SudokuField getSudokuField(int id) {
-        return fields.get(id);
+    public void update() {
+
+        for (int i = 0; i < 81; i++) {
+
+            SudokuComponent component = this.getComponent(i);
+
+            if (!sudoku.get(i).isValid()) component.setBackground(Color.RED);
+            else if (component.isFocused()) component.setBackground(Color.YELLOW);
+            else component.setBackground(Color.WHITE);
+
+            component.setTextColor(sudoku.get(i).isEditable() ? Color.BLUE : Color.BLACK);
+        }
+        System.out.println(sudoku);
+    }
+
+    public SudokuComponent getComponent(int id) {
+        return (SudokuComponent) getContentPane().getComponent(id);
     }
 }
