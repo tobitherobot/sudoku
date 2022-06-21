@@ -16,20 +16,17 @@ public class Sudoku {
         }
     }
 
-    public SudokuField get(int id) {
-        return fields.get(id);
-    }
-
-    public void setValue(int id, int value) {
-        fields.get(id).setValue(value);
-    }
+    public SudokuField getField(int id) { return fields.get(id); }
 
     public String toString() {
         String s = "";
         for (int i = 0; i < 81; i++) {
-            if (0<i && i % 9 == 0) s += "\n";
-            if (fields.get(i).isValid()) s += fields.get(i).getValue();
+            if (fields.get(i).isValid()) {
+                if (fields.get(i).getValue().isEmpty()) s += " ";
+                else s += fields.get(i).getValue();
+                if (0 < i && i % 9 == 0) s += "\n";
+            } else s += "X";
         }
-        return s;
+        return s + "\n";
     }
 }

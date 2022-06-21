@@ -1,6 +1,7 @@
 package org.example.view;
 
-import org.example.Controller;
+import org.example.SudokuController;
+import org.example.model.SudokuField;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -11,31 +12,26 @@ import java.awt.event.FocusListener;
 
 public class SudokuComponent extends JTextField {
 
+    private SudokuController controller;
+
     private int id;
-    private boolean isFocused;
 
-    private Controller controller;
-
-    public SudokuComponent(Controller controller, int id) {
+    public SudokuComponent(SudokuController controller, SudokuField field) {
 
         // TODO only allow single digit inputs, change font?
         this.controller = controller;
-
-        this.id = id;
-        this.isFocused = false;
-        setText("");
-        setEditable(true);
+        this.id = field.getId();
 
         addChangeListener();
         addFocusListener();
 
         setHorizontalAlignment(JTextField.CENTER);
         setFont(new Font("Serif", Font.BOLD, 30));
-
-        if (isEditable()) setTextColor(Color.BLUE);
-        else setTextColor(Color.BLACK);
     }
 
+    /**
+     * Change Listener = wird bei der Eingabe ausgeführt
+     */
     private void addChangeListener() {
 
         getDocument().addDocumentListener(new DocumentListener() {
@@ -51,11 +47,14 @@ public class SudokuComponent extends JTextField {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                controller.onChange(getId(), getText());
+                controller.onChange(id, getText());
             }
         });
     }
 
+    /**
+     * Focus Listener = wird beim Mausklick ausgeführt
+     */
     private void addFocusListener() {
 
         addFocusListener(new FocusListener() {
@@ -69,53 +68,5 @@ public class SudokuComponent extends JTextField {
                 controller.onFocusLost(id);
             }
         });
-    }
-
-    public boolean isValidInput() {
-
-        String text = getText();
-
-        try {
-            if (!text.isEmpty()) {
-                int nm = Integer.parseInt(text);
-                if (nm < 1 || 9 < nm) throw new NumberFormatException("Number is too big! " + nm);
-            }
-            return true;
-        } catch (NumberFormatException e) {
-            System.out.println("Input is invalid! " + text);
-        }
-        return false;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setFocused(boolean isFocused) {
-        this.isFocused = isFocused;
-    }
-
-    public boolean isFocused() {
-        return isFocused;
-    }
-
-    public void setValue(String value) {
-        setText(value);
-    }
-
-    public String getValue() {
-        return getText();
-    }
-
-    public void setTextColor(Color color) {
-        setForeground(color);
-    }
-
-    public Color getTextColor() {
-        return getForeground();
     }
 }
