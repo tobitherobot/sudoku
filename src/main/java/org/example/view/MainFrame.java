@@ -3,6 +3,7 @@ package org.example.view;
 import org.example.SudokuController;
 import org.example.model.Sudoku;
 import org.example.model.SudokuField;
+import org.example.model.SudokuUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +18,8 @@ public class MainFrame extends JFrame {
     public MainFrame() {
 
         super("Sudoku");
-        sudoku = new Sudoku();
+        //sudoku = new Sudoku();
+        sudoku = SudokuUtil.parse("003020600900305001001806400008102900700000008006708200002609500800203009005010300");
         SudokuController controller = new SudokuController(sudoku, this);
 
         for (int i = 0; i < 81; i++) {
@@ -41,7 +43,7 @@ public class MainFrame extends JFrame {
 
             SudokuField field = sudoku.getField(i);
             SudokuComponent comp = getComponent(i);
-            // comp.setText(field.getValue());
+            // comp.setText(field.getValue()); TODO how to set text
 
             if (!field.isValid()) comp.setBackground(Color.RED);
             else if (field.isFocused()) comp.setBackground(Color.YELLOW);

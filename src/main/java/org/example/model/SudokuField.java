@@ -32,7 +32,7 @@ public class SudokuField {
 
         // TODO move to sudoku solver class
         try {
-            if (!value.isEmpty()) {
+            if (!value.trim().isEmpty()) {
                 int nm = Integer.parseInt(value);
                 if (nm < 1 || 9 < nm) throw new NumberFormatException("Number is too big! " + nm);
             }
