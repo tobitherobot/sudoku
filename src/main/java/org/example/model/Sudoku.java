@@ -22,4 +22,6 @@ public class Sudoku {
     public void setFields(List<SudokuField> fields) { this.fields = fields; }
 
     public List<SudokuField> getFields() { return fields; }
+
+    public String toString() { return SudokuUtil.toString(this); }
 }

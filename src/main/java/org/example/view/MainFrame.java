@@ -7,6 +7,7 @@ import org.example.model.SudokuUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class MainFrame extends JFrame {
 
@@ -33,24 +34,35 @@ public class MainFrame extends JFrame {
         setLayout(new GridLayout(9, 9));
         setSize(600, 600);
 
-        update();
+        updateAll();
         setVisible(true);
     }
 
-    public void update() {
+    /**
+     * Aktualisiert das Sudoku-Eingabefeld nach Modell des übergebenen Sudoku-Felds
+     * @param field Sudoku-Feld
+     */
+    public void update(SudokuField field) {
+
+        List<SudokuField> toUpdate = SudokuUtil.getAdjacents(sudoku, field);
+
+        for (SudokuField f : toUpdate) {
+            getComponent(f.getId()).update(f);
+        }
+    }
+
+    /**
+     * Aktualisiert das gesamte Sudoku.
+     */
+    public void updateAll() {
 
         for (int i = 0; i < 81; i++) {
 
             SudokuField field = sudoku.getField(i);
             SudokuComponent comp = getComponent(i);
-            // comp.setText(field.getValue()); TODO how to set text
 
-            if (!field.isValid()) comp.setBackground(Color.RED);
-            else if (field.isFocused()) comp.setBackground(Color.YELLOW);
-            else comp.setBackground(Color.WHITE);
-
-            if (field.isEditable()) comp.setForeground(Color.BLUE);
-            else comp.setForeground(Color.BLACK);
+            comp.setValue(sudoku.getField(i).getValue());
+            comp.update(field);
         }
         revalidate();
         repaint();

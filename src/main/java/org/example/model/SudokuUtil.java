@@ -81,7 +81,8 @@ public class SudokuUtil {
 
         if (s.length() == 81) {
             for (int i = 0; i < 81; i++) {
-                fields.add(new SudokuField(i, String.valueOf(s.charAt(i))));
+                if (s.charAt(i) == ' ') fields.add(new SudokuField(i));
+                else fields.add(new SudokuField(i, String.valueOf(s.charAt(i))));
             }
             sudoku.setFields(fields);
         }
@@ -96,10 +97,12 @@ public class SudokuUtil {
     public static String toString(Sudoku sudoku) {
         String s = "";
         for (int i = 0; i < 81; i++) {
+
             if (sudoku.getFields().get(i).isValid()) {
+                if (0 < i && i % 9 == 0) s += "\n";
+
                 if (sudoku.getFields().get(i).getValue().isEmpty()) s += "0";
                 else s += sudoku.getFields().get(i).getValue();
-                if (0 < i && i % 9 == 0) s += "\n";
             } else s += "X";
         }
         return s + "\n";

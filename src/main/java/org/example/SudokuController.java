@@ -23,10 +23,12 @@ public class SudokuController {
     public void onChange(int id, String value) {
 
         SudokuField field = sudoku.getField(id);
-        //System.out.println("Field " + field.getId() + " changed from " + field.getValue() + " to " + value);
-        System.out.println(SudokuUtil.toString(sudoku));
-        field.setValue(value);
-        view.update();
+        if (!field.getValue().isEmpty() || !field.getValue().equals(value)) {
+            //System.out.println("Field " + field.getId() + " changed from " + field.getValue() + " to " + value);
+            field.setValue(value);
+            System.out.println(sudoku);
+            view.update(field);
+        }
     }
 
     /**
@@ -37,7 +39,7 @@ public class SudokuController {
 
         SudokuField field = sudoku.getField(id);
         SudokuUtil.getAdjacents(sudoku, field).forEach(e -> { e.setFocused(true); });
-        view.update();
+        view.update(field);
     }
 
     /**
@@ -48,6 +50,6 @@ public class SudokuController {
 
         SudokuField field = sudoku.getField(id);
         SudokuUtil.getAdjacents(sudoku, field).forEach(e -> { e.setFocused(false); });
-        view.update();
+        view.update(field);
     }
 }

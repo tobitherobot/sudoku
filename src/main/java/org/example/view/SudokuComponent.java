@@ -2,6 +2,7 @@ package org.example.view;
 
 import org.example.SudokuController;
 import org.example.model.SudokuField;
+import org.example.model.SudokuUtil;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -30,15 +31,59 @@ public class SudokuComponent extends JTextField {
     }
 
     /**
+     * Aktualisiert das Sudoku-Eingabefeld nach dem angegebenen Sudoku-Feld
+     * @param field angegebenes Sudoku-Feld
+     */
+    public void update(SudokuField field) {
+
+        Runnable doUpdate = new Runnable() {
+            @Override
+            public void run() {
+
+                if (!field.isValid()) setBackground(Color.RED);
+                else if (field.isFocused()) setBackground(Color.YELLOW);
+                else setBackground(Color.WHITE);
+
+                if (field.isEditable()) {
+                    setForeground(Color.BLUE);
+                    setEditable(true);
+                }
+                else {
+                    setForeground(Color.BLACK);
+                    setEditable(false);
+                }
+            }
+        };
+        SwingUtilities.invokeLater(doUpdate);
+    }
+
+    /**
+     * Setzt den Wert eines Sudoku-Eingabefelds auf einen bestimmten Wert.
+     *
+     * Wird nur bei der Initialisierung und Eintragen eines Tipps ausgeführt. Steht in einer eigenen Methode,
+     * da das Verändern des Inhalts eines Textfelds zu Fehlern führen kann.
+     *
+     * @param value Wert
+     */
+    public void setValue(String value) {
+
+        Runnable doUpdate = new Runnable() {
+            @Override
+            public void run() {
+                setText(value);
+            }
+        };
+        SwingUtilities.invokeLater(doUpdate);
+    }
+
+    /**
      * Change Listener = wird bei der Eingabe ausgeführt
      */
     private void addChangeListener() {
 
         getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                controller.onChange(id, getText());
-            }
+            public void insertUpdate(DocumentEvent e) { controller.onChange(id, getText()); }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
