@@ -5,6 +5,12 @@ import java.util.stream.Collectors;
 
 public class SudokuSolver {
 
+    public void checkSudoku(Sudoku sudoku) {
+        for (SudokuField field : sudoku.getFields()) {
+            checkField(sudoku, field);
+        }
+    }
+
     /**
      * Überprüft, ob der Wert des übergebenen Felds bereits in der selben
      * Reihe, Spalte oder Box bereits vorhanden ist.
@@ -15,7 +21,7 @@ public class SudokuSolver {
      */
     public void checkField(Sudoku sudoku, SudokuField field) {
 
-        if (field.isValid()) {
+        if (!field.getValue().isEmpty()) {
 
             List<SudokuField> row = SudokuUtil.getRow(sudoku, field)
                     .stream()
@@ -35,15 +41,7 @@ public class SudokuSolver {
             if (1 < row.size() || 1 < col.size() || 1 < box.size()) {
                 field.setValid(false);
             }
-
-            List<SudokuField> adj = SudokuUtil.getAdjacents(sudoku, field);
-            adj.remove(field);
-            for (SudokuField f : adj) {
-                if (!f.getValue().isEmpty()) {
-                    System.out.println(f.getValue());
-                    checkField(sudoku, f);
-                }
-            }
+            else field.setValid(true);
         }
     }
 }

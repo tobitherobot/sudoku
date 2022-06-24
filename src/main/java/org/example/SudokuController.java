@@ -28,7 +28,7 @@ public class SudokuController {
         SudokuField field = sudoku.getField(id);
         if (!field.getValue().isEmpty() || !field.getValue().equals(value)) {
             field.setValue(value);
-            if (field.isValid() && !value.isEmpty()) solver.checkField(sudoku, field);
+            solver.checkSudoku(sudoku);
             view.update(field);
             // System.out.println(sudoku);
         }
