@@ -15,8 +15,6 @@ public class Sudoku {
         }
     }
 
-    public void setField(SudokuField field) { fields.set(field.getId(), field); }
-
     public SudokuField getField(int id) { return fields.get(id); }
 
     public void setFields(List<SudokuField> fields) { this.fields = fields; }

@@ -31,7 +31,7 @@ public class SudokuComponent extends JTextField {
     }
 
     /**
-     * Aktualisiert das Sudoku-Eingabefeld nach dem angegebenen Sudoku-Feld
+     * Aktualisiert das Sudoku-Eingabefeld nach den Attributen angegebenen Sudoku-Feld
      * @param field angegebenes Sudoku-Feld
      */
     public void update(SudokuField field) {

@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.model.Sudoku;
 import org.example.model.SudokuField;
+import org.example.model.SudokuSolver;
 import org.example.model.SudokuUtil;
 import org.example.view.MainFrame;
 
@@ -9,11 +10,13 @@ public class SudokuController {
 
     private Sudoku sudoku;
     private MainFrame view;
+    private SudokuSolver solver;
 
     public SudokuController(Sudoku sudoku, MainFrame view) {
 
         this.sudoku = sudoku;
         this.view = view;
+        this.solver = new SudokuSolver();
     }
 
     /**
@@ -24,10 +27,10 @@ public class SudokuController {
 
         SudokuField field = sudoku.getField(id);
         if (!field.getValue().isEmpty() || !field.getValue().equals(value)) {
-            //System.out.println("Field " + field.getId() + " changed from " + field.getValue() + " to " + value);
             field.setValue(value);
-            System.out.println(sudoku);
+            if (field.isValid() && !value.isEmpty()) solver.checkField(sudoku, field);
             view.update(field);
+            // System.out.println(sudoku);
         }
     }
 

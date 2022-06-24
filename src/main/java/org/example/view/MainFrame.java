@@ -19,8 +19,8 @@ public class MainFrame extends JFrame {
     public MainFrame() {
 
         super("Sudoku");
-        //sudoku = new Sudoku();
-        sudoku = SudokuUtil.parse("003020600900305001001806400008102900700000008006708200002609500800203009005010300");
+        sudoku = new Sudoku();
+        //sudoku = SudokuUtil.parse("003020600900305001001806400008102900700000008006708200002609500800203009005010300");
         SudokuController controller = new SudokuController(sudoku, this);
 
         for (int i = 0; i < 81; i++) {
