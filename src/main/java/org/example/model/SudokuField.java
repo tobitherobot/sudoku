@@ -6,6 +6,7 @@ public class SudokuField {
     private String value;
 
     private boolean isValid;
+    private boolean isHint;
     private boolean isFocused;
     private boolean isEditable;
 
@@ -14,9 +15,23 @@ public class SudokuField {
         this.id = id;
         this.value = value;
 
-        this.isValid = check();
+        this.isValid = true;
+        this.isHint = false;
         this.isFocused = false;
         this.isEditable = isEditable;
+
+        check();
+    }
+
+    public SudokuField(SudokuField field) {
+
+        this.id = field.getId();
+        this.value = field.getValue();
+
+        this.isValid = field.isValid();
+        this.isHint = field.isHint();
+        this.isFocused = field.isFocused();
+        this.isEditable = field.isEditable();
     }
 
     public SudokuField(int id) { this(id, "", true); }
@@ -24,23 +39,24 @@ public class SudokuField {
     public SudokuField(int id, String value) { this(id, value, false); }
 
     /**
-     * Gibt zurück, ob der eingegebene String valide ist (zwischen 1 und 9, leerer String)
+     * Gibt zurück, ob der eingegebene String valide ist (zwischen 1 und 9 oder leerer String)
      *
      * @return wahr, wenn Value leer oder eine Ziffer zwischen 1 und 9 eingegeben wurde
      */
-    private boolean check() {
+    public void check() {
 
-        // TODO move to sudoku solver class
+        // TODO Eingabe abc wird nicht rot gekennzeichnet
         try {
-            if (!value.trim().isEmpty()) {
+            if (value.isEmpty()) isValid = true;
+            else {
                 int nm = Integer.parseInt(value);
-                if (nm < 1 || 9 < nm) throw new NumberFormatException("Number is too big! " + nm);
+                if (nm < 1 || 9 < nm) throw new NumberFormatException("Number is out of range! " + nm);
+                isValid = true;
             }
-            return true;
         } catch (NumberFormatException e) {
             System.err.println("Input is invalid! " + value);
         }
-        return false;
+        isValid = false;
     }
 
     public void setId(int id) {
@@ -51,16 +67,17 @@ public class SudokuField {
         return id;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-        isValid = check();
-    }
+    public void setValue(String value) { this.value = value; }
 
     public String getValue() { return value; }
 
     public void setValid(boolean isValid) { this.isValid = isValid; }
 
     public boolean isValid() { return isValid; }
+
+    public void setHint(boolean isHint) { this.isHint = isHint; }
+
+    public boolean isHint() { return isHint; }
 
     public void setFocused(boolean isFocused) { this.isFocused = isFocused; }
 

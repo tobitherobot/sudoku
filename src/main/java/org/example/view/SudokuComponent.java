@@ -44,7 +44,11 @@ public class SudokuComponent extends JTextField {
                 else if (field.isFocused()) setBackground(Color.YELLOW);
                 else setBackground(Color.WHITE);
 
-                if (field.isEditable()) {
+                if (field.isHint()) {
+                    setForeground(Color.ORANGE);
+                    setEditable(false);
+                }
+                else if (field.isEditable()) {
                     setForeground(Color.BLUE);
                     setEditable(true);
                 }
