@@ -6,6 +6,7 @@ import org.example.model.SudokuSolver;
 import org.example.model.SudokuUtil;
 import org.example.view.MainFrame;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
@@ -62,12 +63,21 @@ public class SudokuController {
 
         sudoku = solver.generate();
         view.setSudoku(sudoku);
+
+        view.updateAll();
+    }
+
+    public void onReset() {
+
+        sudoku.getFields().stream().filter(e -> e.isHint() || e.isEditable()).forEach(e -> e.setValue(""));
         view.updateAll();
     }
 
     public void onWin() {
 
-        System.out.println("won");
+        for (int i = 0; i < 81; i++) {
+            view.getComponent(i).setBackground(Color.GREEN);
+        }
     }
 
     /**

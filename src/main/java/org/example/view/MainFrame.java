@@ -82,7 +82,15 @@ public class MainFrame extends JFrame {
         });
         buttons.add(shuffle);
 
-        buttons.add(new JButton("Reset"));
+        JButton reset = new JButton("Reset");
+        reset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.onReset();
+            }
+        });
+        buttons.add(reset);
+
         add(buttons, BorderLayout.PAGE_END);
 
         updateAll();
