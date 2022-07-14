@@ -15,11 +15,13 @@ import java.util.Map;
 
 public class MainFrame extends JFrame {
 
-    private final int VIEW_HEIGHT = 720;
-    private final int VIEW_WIDTH = 1080;
+    private final int VIEW_HEIGHT = 600;
+    private final int VIEW_WIDTH = 700;
 
     private Map<Integer, SudokuComponent> components;
     private Sudoku sudoku;
+    
+    JLabel titlelabel;
 
     public MainFrame() {
 
@@ -32,6 +34,18 @@ public class MainFrame extends JFrame {
         setSize(VIEW_WIDTH, VIEW_HEIGHT);
         setLayout(new BorderLayout());
         setResizable(false);
+        
+        //Sudoku Titel
+        titlelabel = new JLabel();
+        titlelabel.setText("Sudoku");
+        JPanel titlepanel = new JPanel();
+        titlepanel.setLayout(new GridLayout(1,1));
+        titlepanel.add(titlelabel);
+        titlepanel.setSize(100,100);
+        add(titlepanel, BorderLayout.NORTH);
+        titlelabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titlelabel.setFont(new Font ("Serif",Font.BOLD, 30));
+        
 
         // sudoku board
         JPanel board = new JPanel();
@@ -52,7 +66,7 @@ public class MainFrame extends JFrame {
 
             for (int j = 0; j < 9; j++) {
 
-                int id = (i/3)*27 + (i%3)*3 + (j/3)*9 + (j%3); // frag nicht :D
+                int id = (i/3)*27 + (i%3)*3 + (j/3)*9 + (j%3); 
                 SudokuComponent comp = new SudokuComponent(controller, sudoku.getField(id));
 
                 components.put(id, comp);
