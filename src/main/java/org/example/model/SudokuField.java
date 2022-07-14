@@ -19,24 +19,34 @@ public class SudokuField {
         this.isEditable = isEditable;
     }
 
+    public SudokuField(SudokuField field) {
+
+        this.id = field.getId();
+        this.value = field.getValue();
+
+        this.isValid = field.isValid();
+        this.isFocused = field.isFocused();
+        this.isEditable = field.isEditable();
+    }
+
     public SudokuField(int id) { this(id, "", true); }
 
     public SudokuField(int id, String value) { this(id, value, false); }
 
     /**
-     * Gibt zurück, ob der eingegebene String valide ist (zwischen 1 und 9, leerer String)
+     * Gibt zurück, ob der eingegebene String valide ist (zwischen 1 und 9 oder leerer String)
      *
      * @return wahr, wenn Value leer oder eine Ziffer zwischen 1 und 9 eingegeben wurde
      */
     private boolean check() {
 
-        // TODO move to sudoku solver class
         try {
-            if (!value.trim().isEmpty()) {
+            if (value.isEmpty()) return true;
+            else {
                 int nm = Integer.parseInt(value);
                 if (nm < 1 || 9 < nm) throw new NumberFormatException("Number is too big! " + nm);
+                return true;
             }
-            return true;
         } catch (NumberFormatException e) {
             System.err.println("Input is invalid! " + value);
         }

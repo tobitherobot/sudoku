@@ -6,17 +6,24 @@ import org.example.model.SudokuSolver;
 import org.example.model.SudokuUtil;
 import org.example.view.MainFrame;
 
+import java.util.List;
+import java.util.Random;
+
 public class SudokuController {
 
     private Sudoku sudoku;
     private MainFrame view;
     private SudokuSolver solver;
 
+    private Random random;
+
     public SudokuController(Sudoku sudoku, MainFrame view) {
 
         this.sudoku = sudoku;
         this.view = view;
         this.solver = new SudokuSolver();
+
+        this.random = new Random();
     }
 
     /**
@@ -28,10 +35,22 @@ public class SudokuController {
         SudokuField field = sudoku.getField(id);
         if (!field.getValue().isEmpty() || !field.getValue().equals(value)) {
             field.setValue(value);
-            solver.checkSudoku(sudoku);
+            solver.checkSudokuAdjacents(sudoku);
             view.update(field);
-            // System.out.println(sudoku);
         }
+    }
+
+    public void onHint() {
+
+        Sudoku solution = solver.getSolution(sudoku);
+        List<SudokuField> empties = SudokuUtil.getEmpties(sudoku);
+        SudokuField randomField = empties.get(random.nextInt(empties.size()));
+
+        randomField.setValue(solution.getField(randomField.getId()).getValue());
+        view.getComponent(randomField.getId()).setValue(randomField.getValue());
+        randomField.setEditable(false);
+        
+        view.update(randomField);
     }
 
     /**
