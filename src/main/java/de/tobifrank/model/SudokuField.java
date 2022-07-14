@@ -1,4 +1,4 @@
-package org.example.model;
+package de.tobifrank.model;
 
 public class SudokuField {
 
@@ -43,29 +43,21 @@ public class SudokuField {
      *
      * @return wahr, wenn Value leer oder eine Ziffer zwischen 1 und 9 eingegeben wurde
      */
-    public void check() {
+    public boolean check() {
 
-        // TODO Eingabe abc wird nicht rot gekennzeichnet
-        try {
-            if (value.isEmpty()) isValid = true;
-            else {
-                int nm = Integer.parseInt(value);
-                if (nm < 1 || 9 < nm) throw new NumberFormatException("Number is out of range! " + nm);
-                isValid = true;
-            }
+        if (value.isEmpty()) return true;
+        else try    // TODO Eingabe abc wird nicht rot gekennzeichnet
+        {
+            int nm = Integer.parseInt(value);
+            if (nm < 1 || 9 < nm) throw new NumberFormatException("Number is out of range! " + nm);
+            return true;
         } catch (NumberFormatException e) {
             System.err.println("Input is invalid! " + value);
         }
-        isValid = false;
+        return false;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
     public void setValue(String value) { this.value = value; }
 
@@ -73,7 +65,7 @@ public class SudokuField {
 
     public void setValid(boolean isValid) { this.isValid = isValid; }
 
-    public boolean isValid() { return isValid; }
+    public boolean isValid() { return isValid && check(); }
 
     public void setHint(boolean isHint) { this.isHint = isHint; }
 

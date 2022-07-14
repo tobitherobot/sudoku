@@ -1,4 +1,4 @@
-package org.example.model;
+package de.tobifrank.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,6 +43,11 @@ public class SudokuUtil {
         return true;
     }
 
+    /**
+     * Prüft, of jedes Feld richtig gefüllt ist
+     * @param sudoku Sudoku
+     * @return ob das Sudoku gelöst ist
+     */
     public static boolean isSolved(Sudoku sudoku) {
 
         for (SudokuField field : sudoku.getFields()) {
@@ -51,33 +56,6 @@ public class SudokuUtil {
             }
         }
         return true;
-    }
-
-    public static List<SudokuField> getEmpties(Sudoku sudoku) {
-
-        return sudoku.getFields().stream()
-                .filter(f -> f.getValue().isEmpty())
-                .collect(Collectors.toList());
-    }
-
-    public static List<SudokuField> getFulls(Sudoku sudoku) {
-
-        return sudoku.getFields().stream()
-                .filter(f -> !f.getValue().isEmpty())
-                .collect(Collectors.toList());
-    }
-
-    public static List<String> getPossibleValues(Sudoku sudoku, SudokuField field) {
-
-        List<String> possibilities = new ArrayList<>();
-
-        for (int i = 1; i <= 9; i++) {
-            field.setValue(String.valueOf(i));
-            if (checkField(sudoku, field)) {
-                possibilities.add(String.valueOf(i));
-            }
-        }
-        return possibilities;
     }
 
     /**
@@ -140,6 +118,8 @@ public class SudokuUtil {
     }
 
     /**
+     * @deprecated
+     *
      * Liest einen Input-String (9x9) ein und wandelt diesen in ein Sudoku um
      * @param s Eingabe-String mit insg. 81 (9x9) Zeichen
      * @return Sudoku

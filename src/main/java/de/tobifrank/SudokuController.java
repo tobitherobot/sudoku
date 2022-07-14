@@ -1,57 +1,45 @@
-package org.example;
+package de.tobifrank;
 
-import org.example.model.Sudoku;
-import org.example.model.SudokuField;
-import org.example.model.SudokuSolver;
-import org.example.model.SudokuUtil;
-import org.example.view.MainFrame;
+import de.tobifrank.model.SudokuSolver;
+import de.tobifrank.model.Sudoku;
+import de.tobifrank.model.SudokuField;
+import de.tobifrank.model.SudokuUtil;
+import de.tobifrank.view.MainFrame;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class SudokuController {
 
     private Sudoku sudoku;
+    private Sudoku solution;
+
     private MainFrame view;
     private SudokuSolver solver;
 
     public SudokuController(Sudoku sudoku, MainFrame view) {
 
         this.sudoku = sudoku;
+        this.solution = null;
+
         this.view = view;
         this.solver = new SudokuSolver();
     }
 
     /**
-     * Wird ausgeführt, wenn in ein Feld etwas eingegeben wird
-     * @param id ID des Feldes
+     * Hint-Button
      */
-    public void onChange(int id, String value) {
-
-        SudokuField field = sudoku.getField(id);
-        if (!field.getValue().isEmpty() || !field.getValue().equals(value)) {
-            field.setValue(value);
-            field.check();
-
-            solver.checkSudokuAdjacents(sudoku, field);
-            
-            if (SudokuUtil.isSolved(sudoku)) onWin();
-            
-            view.update(field);
-            
-            
-        }
-    }
-
     public void onHint() {
 
-        Sudoku solution = solver.getSolution(sudoku);
-        List<SudokuField> empties = SudokuUtil.getEmpties(sudoku);
+        List<SudokuField> editables = sudoku.getFields().stream()
+                .filter(f -> f.isEditable())
+                .collect(Collectors.toList());
 
-        if (!empties.isEmpty()) {
+        if (!editables.isEmpty()) {
             Random random = new Random();
-            SudokuField randomField = empties.get(random.nextInt(empties.size()));
+            SudokuField randomField = editables.get(random.nextInt(editables.size()));
 
             randomField.setValue(solution.getField(randomField.getId()).getValue());
             view.getComponent(randomField.getId()).setValue(randomField.getValue());
@@ -61,19 +49,25 @@ public class SudokuController {
             if (SudokuUtil.isSolved(sudoku)) onWin();
             
             view.update(randomField);
-
-          
         }
     }
 
+    /**
+     * Shuffle-Button
+     */
     public void onShuffle() {
 
         sudoku = solver.generate();
+        solution = solver.getSolution(sudoku);
+
         view.setSudoku(sudoku);
         view.setTitleLabel("Sudoku");
         view.updateAll();
     }
 
+    /**
+     * Reset-Button
+     */
     public void onReset() {
 
         sudoku.getFields().stream().filter(e -> e.isHint() || e.isEditable()).forEach(e -> {
@@ -85,15 +79,34 @@ public class SudokuController {
         view.updateAll();
     }
 
+    /**
+     * wird beim erfolgreichen Ausfüllen des Sudokus ausgeführt
+     */
     public void onWin() {
 
         for (int i = 0; i < 81; i++) {
-            view.getComponent(i).setForeground(Color.GREEN);           
-            
+            view.getComponent(i).setBackground(Color.WHITE);
+            view.getComponent(i).setForeground(Color.GREEN);
+            view.getComponent(i).setEditable(false);
         }
         view.setTitleLabel("Victory!");
-        
-        
+    }
+
+    /**
+     * Wird ausgeführt, wenn in ein Feld etwas eingegeben wird
+     * @param id ID des Feldes
+     */
+    public void onChange(int id, String value) {
+
+        SudokuField field = sudoku.getField(id);
+        if (!field.getValue().isEmpty() || !field.getValue().equals(value)) {
+            field.setValue(value);
+
+            solver.checkSudokuAdjacents(sudoku, field);
+            if (SudokuUtil.isSolved(sudoku)) onWin();
+
+            view.update(field);
+        }
     }
 
     /**

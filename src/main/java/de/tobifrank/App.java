@@ -1,6 +1,6 @@
-package org.example;
+package de.tobifrank;
 
-import org.example.view.MainFrame;
+import de.tobifrank.view.MainFrame;
 
 import javax.swing.*;
 

@@ -1,8 +1,7 @@
-package org.example.view;
+package de.tobifrank.view;
 
-import org.example.SudokuController;
-import org.example.model.SudokuField;
-import org.example.model.SudokuUtil;
+import de.tobifrank.SudokuController;
+import de.tobifrank.model.SudokuField;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -19,7 +18,6 @@ public class SudokuComponent extends JTextField {
 
     public SudokuComponent(SudokuController controller, SudokuField field) {
 
-        // TODO only allow single digit inputs, change font?
         this.controller = controller;
         this.id = field.getId();
 
@@ -27,7 +25,7 @@ public class SudokuComponent extends JTextField {
         addFocusListener();
 
         setHorizontalAlignment(JTextField.CENTER);
-        setFont(new Font("Serif", Font.BOLD, 30));
+        setFont(new Font("Arial", Font.BOLD, 30));
     }
 
     /**
@@ -40,21 +38,22 @@ public class SudokuComponent extends JTextField {
             @Override
             public void run() {
 
-                if (!field.isValid()) setBackground(Color.RED);
-                else if (field.isFocused()) setBackground(Color.YELLOW);
-                else setBackground(Color.WHITE);
+                if (getForeground() != Color.GREEN) {
 
-                if (field.isHint()) {
-                    setForeground(Color.ORANGE);
-                    setEditable(false);
-                }
-                else if (field.isEditable()) {
-                    setForeground(Color.BLUE);
-                    setEditable(true);
-                }
-                else {
-                    setForeground(Color.BLACK);
-                    setEditable(false);
+                    if (!field.isValid()) setBackground(Color.decode("#fcc5c0"));
+                    else if (field.isFocused()) setBackground(Color.decode("#ebfcfb"));
+                    else setBackground(Color.WHITE);
+
+                    if (field.isHint()) {
+                        setForeground(Color.decode("#e88b00"));
+                        setEditable(false);
+                    } else if (field.isEditable()) {
+                        setForeground(Color.BLUE);
+                        setEditable(true);
+                    } else {
+                        setForeground(Color.BLACK);
+                        setEditable(false);
+                    }
                 }
             }
         };
@@ -80,9 +79,6 @@ public class SudokuComponent extends JTextField {
         SwingUtilities.invokeLater(doUpdate);
     }
 
-    /**
-     * Change Listener = wird bei der Eingabe ausgeführt
-     */
     private void addChangeListener() {
 
         getDocument().addDocumentListener(new DocumentListener() {
@@ -101,9 +97,6 @@ public class SudokuComponent extends JTextField {
         });
     }
 
-    /**
-     * Focus Listener = wird beim Mausklick ausgeführt
-     */
     private void addFocusListener() {
 
         addFocusListener(new FocusListener() {

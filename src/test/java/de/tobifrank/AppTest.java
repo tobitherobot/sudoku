@@ -1,4 +1,4 @@
-package org.example;
+package de.tobifrank;
 
 import static org.junit.Assert.assertTrue;
 
