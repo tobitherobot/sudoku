@@ -15,15 +15,11 @@ public class SudokuController {
     private MainFrame view;
     private SudokuSolver solver;
 
-    private Random random;
-
     public SudokuController(Sudoku sudoku, MainFrame view) {
 
         this.sudoku = sudoku;
         this.view = view;
         this.solver = new SudokuSolver();
-
-        this.random = new Random();
     }
 
     /**
@@ -48,6 +44,7 @@ public class SudokuController {
         List<SudokuField> empties = SudokuUtil.getEmpties(sudoku);
 
         if (!empties.isEmpty()) {
+            Random random = new Random();
             SudokuField randomField = empties.get(random.nextInt(empties.size()));
 
             randomField.setValue(solution.getField(randomField.getId()).getValue());
@@ -56,7 +53,21 @@ public class SudokuController {
             randomField.setHint(true);
 
             view.update(randomField);
+
+            if (SudokuUtil.isSolved(sudoku)) onWin();
         }
+    }
+
+    public void onShuffle() {
+
+        sudoku = solver.generate();
+        view.setSudoku(sudoku);
+        view.updateAll();
+    }
+
+    public void onWin() {
+
+        System.out.println("won");
     }
 
     /**

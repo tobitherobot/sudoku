@@ -43,11 +43,41 @@ public class SudokuUtil {
         return true;
     }
 
+    public static boolean isSolved(Sudoku sudoku) {
+
+        for (SudokuField field : sudoku.getFields()) {
+            if (field.getValue().isEmpty() || !checkField(sudoku, field) || !field.isValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static List<SudokuField> getEmpties(Sudoku sudoku) {
 
         return sudoku.getFields().stream()
                 .filter(f -> f.getValue().isEmpty())
                 .collect(Collectors.toList());
+    }
+
+    public static List<SudokuField> getFulls(Sudoku sudoku) {
+
+        return sudoku.getFields().stream()
+                .filter(f -> !f.getValue().isEmpty())
+                .collect(Collectors.toList());
+    }
+
+    public static List<String> getPossibleValues(Sudoku sudoku, SudokuField field) {
+
+        List<String> possibilities = new ArrayList<>();
+
+        for (int i = 1; i <= 9; i++) {
+            field.setValue(String.valueOf(i));
+            if (checkField(sudoku, field)) {
+                possibilities.add(String.valueOf(i));
+            }
+        }
+        return possibilities;
     }
 
     /**

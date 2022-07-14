@@ -1,6 +1,8 @@
 package org.example.model;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class SudokuSolver {
@@ -17,14 +19,33 @@ public class SudokuSolver {
         return copy;
     }
 
+    public Sudoku generate() {
+
+        Sudoku sudoku = getSolution(new Sudoku());
+        Random random = new Random();
+
+        for (int i = 0; i < 40; i++) {
+            List<SudokuField> fulls = SudokuUtil.getFulls(sudoku);
+            fulls.get(random.nextInt(fulls.size())).setValue("");
+        }
+
+        SudokuUtil.getFulls(sudoku).forEach(e -> e.setEditable(false));
+
+        return sudoku;
+    }
+
     private boolean solve(Sudoku sudoku, int id) {
 
         if (id == 81) {
             return true;
         }
         else if (sudoku.getField(id).isEditable()) {
-            for (int i = 1; i <= 9; i++) {
-                sudoku.getField(id).setValue(String.valueOf(i));
+
+            List<String> possibilities = SudokuUtil.getPossibleValues(sudoku, sudoku.getField(id));
+            Collections.shuffle(possibilities);
+
+            for (String possibility : possibilities) {
+                sudoku.getField(id).setValue(possibility);
                 if (checkField(sudoku, id)) {
                     if (solve(sudoku, id+1)) return true;
                 }

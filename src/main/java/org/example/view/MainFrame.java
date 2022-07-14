@@ -73,8 +73,16 @@ public class MainFrame extends JFrame {
         });
         buttons.add(hint);
 
+        JButton shuffle = new JButton("Shuffle");
+        shuffle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.onShuffle();
+            }
+        });
+        buttons.add(shuffle);
+
         buttons.add(new JButton("Reset"));
-        buttons.add(new JButton("Easy Mode"));
         add(buttons, BorderLayout.PAGE_END);
 
         updateAll();
@@ -115,4 +123,6 @@ public class MainFrame extends JFrame {
     public SudokuComponent getComponent(int id) {
         return components.get(id);
     }
+
+    public void setSudoku(Sudoku sudoku) { this.sudoku = sudoku; }
 }
