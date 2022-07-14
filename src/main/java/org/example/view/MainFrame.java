@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
     private Map<Integer, SudokuComponent> components;
     private Sudoku sudoku;
     
-    JLabel titlelabel;
+    private JLabel titleLabel;
 
     public MainFrame() {
 
@@ -36,15 +36,18 @@ public class MainFrame extends JFrame {
         setResizable(false);
         
         //Sudoku Titel
-        titlelabel = new JLabel();
-        titlelabel.setText("Sudoku");
+        titleLabel = new JLabel();
+        titleLabel.setText("Sudoku");
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setFont(new Font ("Serif",Font.BOLD, 30));
+        
         JPanel titlepanel = new JPanel();
         titlepanel.setLayout(new GridLayout(1,1));
-        titlepanel.add(titlelabel);
+        titlepanel.add(titleLabel);
         titlepanel.setSize(100,100);
         add(titlepanel, BorderLayout.NORTH);
-        titlelabel.setHorizontalAlignment(SwingConstants.CENTER);
-        titlelabel.setFont(new Font ("Serif",Font.BOLD, 30));
+        
+        
         
 
         // sudoku board
@@ -146,5 +149,10 @@ public class MainFrame extends JFrame {
         return components.get(id);
     }
 
+    public void setTitleLabel(String titleLabel) {
+    	this.titleLabel.setText(titleLabel);
+    }
+    
+    
     public void setSudoku(Sudoku sudoku) { this.sudoku = sudoku; }
 }

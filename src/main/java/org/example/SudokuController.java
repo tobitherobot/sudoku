@@ -35,7 +35,12 @@ public class SudokuController {
             field.check();
 
             solver.checkSudokuAdjacents(sudoku, field);
+            
+            if (SudokuUtil.isSolved(sudoku)) onWin();
+            
             view.update(field);
+            
+            
         }
     }
 
@@ -53,9 +58,11 @@ public class SudokuController {
             randomField.setEditable(false);
             randomField.setHint(true);
 
+            if (SudokuUtil.isSolved(sudoku)) onWin();
+            
             view.update(randomField);
 
-            if (SudokuUtil.isSolved(sudoku)) onWin();
+          
         }
     }
 
@@ -63,21 +70,30 @@ public class SudokuController {
 
         sudoku = solver.generate();
         view.setSudoku(sudoku);
-
+        view.setTitleLabel("Sudoku");
         view.updateAll();
     }
 
     public void onReset() {
 
-        sudoku.getFields().stream().filter(e -> e.isHint() || e.isEditable()).forEach(e -> e.setValue(""));
+        sudoku.getFields().stream().filter(e -> e.isHint() || e.isEditable()).forEach(e -> {
+        	e.setValue("");
+        	e.setHint(false);
+        	e.setEditable(true);
+        });
+        view.setTitleLabel("Sudoku");
         view.updateAll();
     }
 
     public void onWin() {
 
         for (int i = 0; i < 81; i++) {
-            view.getComponent(i).setBackground(Color.GREEN);
+            view.getComponent(i).setForeground(Color.GREEN);           
+            
         }
+        view.setTitleLabel("Victory!");
+        
+        
     }
 
     /**
