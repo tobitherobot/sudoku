@@ -23,7 +23,6 @@ public class SudokuController {
 
         this.sudoku = sudoku;
         this.solution = null;
-
         this.view = view;
         this.solver = new SudokuSolver();
     }
@@ -33,13 +32,28 @@ public class SudokuController {
      */
     public void onHint() {
 
-        List<SudokuField> editables = sudoku.getFields().stream()
-                .filter(f -> f.isEditable())
+        List<SudokuField> hintables;
+
+        List<SudokuField> invalids = sudoku.getFields().stream()    // falsche Felder als erstes bei einem Hint ersetzen
+                .filter(f -> !f.isValid() && f.isEditable())
                 .collect(Collectors.toList());
 
-        if (!editables.isEmpty()) {
+        if (invalids.isEmpty()) {
+            if (solver.getSolution(sudoku) != null) {      // wenn Eingaben stimmen, ersetze leere Felder
+                hintables = sudoku.getFields().stream()
+                        .filter(e -> e.getValue().isEmpty())
+                        .collect(Collectors.toList());
+            }
+            else hintables = sudoku.getFields().stream()    // ansonsten wähle ein editierbares Feld
+                    .filter(e -> e.isEditable())
+                    .collect(Collectors.toList());
+        }
+        else hintables = invalids;
+
+        if (!hintables.isEmpty()) {
+
             Random random = new Random();
-            SudokuField randomField = editables.get(random.nextInt(editables.size()));
+            SudokuField randomField = hintables.get(random.nextInt(hintables.size()));
 
             randomField.setValue(solution.getField(randomField.getId()).getValue());
             view.getComponent(randomField.getId()).setValue(randomField.getValue());
@@ -47,7 +61,6 @@ public class SudokuController {
             randomField.setHint(true);
 
             if (SudokuUtil.isSolved(sudoku)) onWin();
-            
             view.update(randomField);
         }
     }

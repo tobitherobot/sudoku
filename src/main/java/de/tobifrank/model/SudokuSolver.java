@@ -17,6 +17,7 @@ public class SudokuSolver {
 
         if (!solve(copy, 0)) {
             System.err.println("The current sudoku is not solvable!");
+            return null;
         }
         return copy;
     }
@@ -32,7 +33,7 @@ public class SudokuSolver {
         Sudoku sudoku = getSolution(new Sudoku());
         Random random = new Random();
 
-        for (int i = 0; i < 44; i++) {
+        for (int i = 0; i < 60; i++) {
 
             int id = random.nextInt(81);
             sudoku.getField(id).setValue("");
