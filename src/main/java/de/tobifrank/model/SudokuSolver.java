@@ -33,7 +33,7 @@ public class SudokuSolver {
         Sudoku sudoku = getSolution(new Sudoku());
         Random random = new Random();
 
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < 49; i++) {
 
             int id = random.nextInt(81);
             sudoku.getField(id).setValue("");
